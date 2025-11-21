@@ -1,5 +1,6 @@
 import { Plugin as RoughCanvasPlugin } from '@antv/g-plugin-rough-canvas-renderer';
 import { SSRResult, type Options } from './types';
+import { ensureFontsRegistered } from './util/register-fonts';
 import { Area } from './vis/area';
 import { Bar } from './vis/bar';
 import { Boxplot } from './vis/boxplot';
@@ -58,6 +59,9 @@ const VIS = {
  * @returns Image Buffer
  */
 export async function render(options: Options): Promise<SSRResult> {
+  // Ensure fonts are registered for proper Chinese character rendering
+  ensureFontsRegistered();
+
   const { type, ...rest } = options;
 
   // if theme is rough, use rough canvas plugin, and set theme to default

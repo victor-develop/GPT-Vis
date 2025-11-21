@@ -252,4 +252,26 @@ describe('SSR render', () => {
     expect(vis.toBuffer()).toImageEqual('__tests__/snapshot', 'line-with-big-data');
     vis.destroy();
   });
+
+  it('line-with-chinese-characters', async () => {
+    const vis = await render({
+      width: 600,
+      height: 400,
+      type: 'line',
+      data: [
+        { time: '一月', value: 7.2 },
+        { time: '二月', value: 5.8 },
+        { time: '三月', value: 9.1 },
+        { time: '四月', value: 12.3 },
+        { time: '五月', value: 15.6 },
+        { time: '六月', value: 18.4 },
+      ],
+      axisXTitle: '月份',
+      axisYTitle: '温度（°C）',
+      title: '月度平均气温',
+    });
+
+    expect(vis.toBuffer()).toImageEqual('__tests__/snapshot', 'line-with-chinese-characters');
+    vis.destroy();
+  });
 });
