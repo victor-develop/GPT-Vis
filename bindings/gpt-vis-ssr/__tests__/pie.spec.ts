@@ -182,4 +182,25 @@ describe('SSR render', () => {
     expect(vis.toBuffer()).toImageEqual('__tests__/snapshot', 'pie-one-data');
     vis.destroy();
   });
+
+  it('pie-custom-fields', async () => {
+    const vis = await render({
+      width: 600,
+      height: 400,
+      type: 'pie',
+      colorField: 'name',
+      angleField: 'count',
+      data: [
+        { name: 'Category A', count: 27 },
+        { name: 'Category B', count: 25 },
+        { name: 'Category C', count: 18 },
+        { name: 'Category D', count: 15 },
+        { name: 'Category E', count: 10 },
+        { name: 'Other', count: 5 },
+      ],
+    });
+
+    expect(vis.toBuffer()).toImageEqual('__tests__/snapshot', 'pie-custom-fields');
+    vis.destroy();
+  });
 });
