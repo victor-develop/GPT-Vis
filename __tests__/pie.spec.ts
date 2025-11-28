@@ -133,21 +133,4 @@ test.describe('Pie component tests', () => {
     };
     await renderChartAndSnapshot(page, spec, 'pie-one-data.png');
   });
-
-  test('pie-custom-fields', async ({ page }) => {
-    const spec = {
-      type: 'pie',
-      colorField: 'name',
-      angleField: 'count',
-      data: [
-        { name: 'Category A', count: 27 },
-        { name: 'Category B', count: 25 },
-        { name: 'Category C', count: 18 },
-        { name: 'Category D', count: 15 },
-        { name: 'Category E', count: 10 },
-        { name: 'Other', count: 5 },
-      ],
-    };
-    await renderChartAndSnapshot(page, spec, 'pie-custom-fields.png');
-  });
 });

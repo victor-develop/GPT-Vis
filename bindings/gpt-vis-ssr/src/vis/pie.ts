@@ -26,8 +26,6 @@ export async function Pie(options: PieOptions) {
     theme = 'default',
     renderPlugins,
     style = {},
-    colorField = 'category',
-    angleField = 'value',
   } = options;
   const { backgroundColor, palette, texture = 'default' } = style;
 
@@ -39,7 +37,7 @@ export async function Pie(options: PieOptions) {
     width,
     height,
     data,
-    encode: { y: angleField, color: colorField },
+    encode: { y: 'value', color: 'category' },
     transform: [{ type: 'stackY' }],
     coordinate: {
       type: 'theta',
@@ -55,8 +53,7 @@ export async function Pie(options: PieOptions) {
     ...(palette?.[0] ? { scale: { color: { range: palette } } } : {}),
     labels: [
       {
-        text: (d: Record<string, unknown>) =>
-          `${d[colorField as string]}: ${d[angleField as string]}`,
+        text: (data: any) => `${data.category}: ${data.value}`,
         position: 'outside',
         radius: 0.85,
         fontSize: 12,
