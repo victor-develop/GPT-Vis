@@ -16,6 +16,20 @@ export type PieOptions = CommonOptions &
     style?: PieStyle;
   };
 
+// Auto-detect the color field from data by checking common field names
+function detectColorField(data: Record<string, unknown>[]): string {
+  if (!data || data.length === 0) return 'category';
+  const firstItem = data[0];
+  // Check for common category/label field names in order of priority
+  const possibleFields = ['category', 'label', 'name', 'type', 'key'];
+  for (const field of possibleFields) {
+    if (field in firstItem) {
+      return field;
+    }
+  }
+  return 'category';
+}
+
 export async function Pie(options: PieOptions) {
   const {
     data,
@@ -29,6 +43,9 @@ export async function Pie(options: PieOptions) {
   } = options;
   const { backgroundColor, palette, texture = 'default' } = style;
 
+  // Auto-detect the color field from data
+  const colorField = detectColorField(data as Record<string, unknown>[]);
+
   return await createChart({
     devicePixelRatio: 3,
     type: 'interval',
@@ -37,7 +54,7 @@ export async function Pie(options: PieOptions) {
     width,
     height,
     data,
-    encode: { y: 'value', color: 'category' },
+    encode: { y: 'value', color: colorField },
     transform: [{ type: 'stackY' }],
     coordinate: {
       type: 'theta',
@@ -53,7 +70,7 @@ export async function Pie(options: PieOptions) {
     ...(palette?.[0] ? { scale: { color: { range: palette } } } : {}),
     labels: [
       {
-        text: (data: any) => `${data.category}: ${data.value}`,
+        text: (d: Record<string, unknown>) => `${d[colorField]}: ${d.value}`,
         position: 'outside',
         radius: 0.85,
         fontSize: 12,

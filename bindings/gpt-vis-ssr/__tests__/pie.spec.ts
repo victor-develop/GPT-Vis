@@ -182,4 +182,21 @@ describe('SSR render', () => {
     expect(vis.toBuffer()).toImageEqual('__tests__/snapshot', 'pie-one-data');
     vis.destroy();
   });
+
+  it('pie-label-field', async () => {
+    // Test auto-detection of 'label' field instead of 'category'
+    const vis = await render({
+      width: 600,
+      height: 400,
+      type: 'pie',
+      data: [
+        { label: 'A', value: 10 },
+        { label: 'B', value: 20 },
+        { label: 'C', value: 30 },
+      ],
+    });
+
+    expect(vis.toBuffer()).toImageEqual('__tests__/snapshot', 'pie-label-field');
+    vis.destroy();
+  });
 });
